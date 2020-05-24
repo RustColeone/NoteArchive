@@ -2,6 +2,8 @@
 This used to be GeneralHomeworkTackler where I: attemp to tackle every homework assignment only with the language that is currently learning.
 
 Now: Archive with all my works that I am done with or no longer need to work on, contains notes written in LaTeX, and my codes which made my life easier.
+
+I might edit the contents in the future.
 ## Getting Started
 If you want to compile the Tex code yourself, you might want to install LaTeX package, setup and environment so you can compile them; or you can simply use [Overleaf](https://www.overleaf.com/)
 
@@ -11,11 +13,8 @@ python -m pip install -r PythonRequirements.txt
 ```
 ## Table of Contents
 This may not be always up to date.
-### Math
-- [Differential Equations(To be added)]()
-- [Vector Calculus](Math/VectorCalculus)
-    - [Notes](Math/VectorCalculus/Notes)
-    - [Resources](Math/VectorCalculus/Resources)
+### CV
+- [CV](CV)
 ### Chemistry
 - [Utilities in Python](Chemistry/Utilities)
     - [Finding Acid Mr by Titration](Chemistry/Utilities/AcidMrbyTitration.py)
@@ -35,19 +34,19 @@ This may not be always up to date.
     - [Intervals Counting](Music/Utilities/IntervalsCount.py)
 - [Unchecked Homeworks](Music/Homework)
 - [Resource and Handouts](Music/Resources)
-### ECE
-- [Labs](ECE/Signal_Processing/Labs)
-    1. [Python Intro](ECE/Signal_Processing/Labs/Lab01)
-    2. [Functions, Conditions, and For Loops](ECE/Signal_Processing/Labs/Lab02)
-    3. [Lab02 Continued](ECE/Signal_Processing/Labs/Lab03)
-    4. [If else and Fourier Series](ECE/Signal_Processing/Labs/Lab04)
-    5. [Array and Images](ECE/Signal_Processing/Labs/Lab05)
-    6. [Down and Up sampling an Image](ECE/Signal_Processing/Labs/Lab06)
-    7. [Running Average Filters](ECE/Signal_Processing/Labs/Lab07)
-    8. [Filtering Sounds](ECE/Signal_Processing/Labs/Lab08)
-    9. [2D FFT](ECE/Signal_Processing/Labs/Lab09)
-- [Homework](ECE/Signal_Processing/Homework)
-    1. [Basics, Trigonometry and FFT](ECE/Signal_Processing/Homework/Homework01)
+### Engineering
+- [Labs](Engineering/Signal_Processing/Labs)
+    1. [Python Intro](Engineering/Signal_Processing/Labs/Lab01)
+    2. [Functions, Conditions, and For Loops](Engineering/Signal_Processing/Labs/Lab02)
+    3. [Lab02 Continued](Engineering/Signal_Processing/Labs/Lab03)
+    4. [If else and Fourier Series](Engineering/Signal_Processing/Labs/Lab04)
+    5. [Array and Images](Engineering/Signal_Processing/Labs/Lab05)
+    6. [Down and Up sampling an Image](Engineering/Signal_Processing/Labs/Lab06)
+    7. [Running Average Filters](Engineering/Signal_Processing/Labs/Lab07)
+    8. [Filtering Sounds](Engineering/Signal_Processing/Labs/Lab08)
+    9. [2D FFT](Engineering/Signal_Processing/Labs/Lab09)
+- [Homework](Engineering/Signal_Processing/Homework)
+    1. [Basics, Trigonometry and FFT](Engineering/Signal_Processing/Homework/Homework01)
     2. [Imaginary Numbers and The Fourier Series](ECE/Signal_Processing/Homework/Homework02)
     3. [Aliasing and Discrete Signals](ECE/Signal_Processing/Homework/Homework03)
     4. [Causal, Linear and Time-invariant Systems](ECE/Signal_Processing/Homework/Homework04)
@@ -58,6 +57,11 @@ This may not be always up to date.
 - [CS16](ComputerScience/CS16)
     - [Lab Starter Code](ComputerScience/CS16/RAW)
     - [Lab Completed](ComputerScience/CS16/Completed)
+### Physics
+- [Physics](Physics)
+    - [Homework](Physics/Homework)
+    - [Notes](Physics/Notes)
+    - [Resources](Physics/Resources)
 ### Math
 - [Differential Equations(To be added)]()
 - [Vector Calculus](Math/VectorCalculus)
