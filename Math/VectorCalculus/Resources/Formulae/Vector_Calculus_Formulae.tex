@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Vector Calculus Formulae}
+\author{Leo Ngan}
+\date{August 2020}
+
+\usepackage[margin=1.25in]{geometry}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage{hyperref}
+
+\begin{document}
+
+\maketitle\pagebreak
+
+\tableofcontents\pagebreak
+
+\section{Formulae}
+    \subsection{Vector Differentiation}
+        \subsubsection{For a parameterized curve r(t)}
+            \begin{align*}
+                &\vec{r}(t) = \left[\begin{array}{c}f_1(t)\\[6pt]f_2(t)\\[6pt]\vdots\end{array}\right]
+                & \frac{d\vec{r}}{dt} = \left[\begin{array}{c}df_1/dt\\[6pt]df_2/dt\\[6pt]\vdots\end{array}\right]
+            \end{align*}
+        \subsubsection{Unit Tangent, Normal and Binomial Vector of r}
+            \begin{align*}
+                \vec{T} =& \frac{\vec{r'}(t)}{\left| \vec{r'}(t) \right|} &
+                \vec{N} =& \frac{\vec{T'}(t)}{\left| \vec{T'}(t) \right|} &
+                \vec{B}(t) =& \vec{T}(t)\times\vec{N}(t)
+            \end{align*}
+        \subsubsection{Gradient, Divergence and Curl}
+            \begin{align*}
+                \nabla =& \left[\begin{array}{c}d/dx_1\\[6pt]d/dx_2\\[6pt]\vdots\end{array}\right] &
+                \nabla{F} =& \left[\begin{array}{c}d(F_1)/dx_1\\[6pt]d(F_2)/dx_2\\[6pt]\vdots\end{array}\right] &
+                \nabla \cdot F =& \frac{d(F_1)}{dx_1} + \frac{d(F_2)}{dx_2}\dots
+            \end{align*}
+            \begin{align*}
+                &\nabla \times f =\;det\left[\begin{array}{cccc}
+                \hat{i}&\hat{j}&\hat{k}&\\[6pt]
+                d/dx_1 & d/dx_2 & d/dx_3&\dots\\[6pt]
+                F_1 & F_2 & F_3&\\[6pt]
+                &\vdots&&
+                \end{array}\right]&
+            \end{align*}
+    \subsection{Vector Integral}
+        \subsubsection{Substitution to polar, cylindrical and spherical coordinate system}
+            \begin{align*}
+                \left[\begin{array}{ccc}x & = & r\cos(\theta)\\[6pt]y & = & r\sin(\theta)\end{array}\right]&&
+                \left[\begin{array}{ccc}x & = & r\cos(\theta)\\[6pt]y & = & r\sin(\theta)\\[6pt]z & = & z\end{array}\right]&&
+                \left[\begin{array}{ccc}x & = & \rho\sin(\phi)\cos(\theta)\\[6pt]y & = & \rho\sin(\phi)\sin(\theta)\\[6pt]x & = & \rho\cos(\phi)\end{array}\right]
+            \end{align*}
+            \begin{align*}
+                dA =& rdr\;d\theta & dV =& r\;dz\;dr\;d\theta & dV =& \rho^2 \sin(\phi)\;d\rho\;d\theta\;d\phi
+            \end{align*}
+        \subsubsection{Line Integral}
+            \begin{align*}
+                \int\displaylimits_C f(x,y) ds = \int_a^b f(h(t),g(t))\left|\vec{r'}(t)\right|dt
+            \end{align*}
+        \subsubsection{Line Integral over Vector Field}
+            \begin{align*}
+                \int\displaylimits_C \vec{F}\cdot d\vec{r} = \int_a^b \vec{F}(\vec{r}(t))\cdot\vec{r'}(t)dt
+            \end{align*}
+        \indent Green's Theorem
+            \begin{align*}
+                \oint\displaylimits_C Pdx+Qdy = 
+                \iint_D \left(\frac{\sigma Q}{\sigma x} - \frac{\sigma P}{\sigma y}\right)dA
+            \end{align*}
+        \subsubsection{Surface Integral}
+            \begin{align*}
+                \vec{r}(u,v) = x(u,v)\hat{i}+y(u,v)\hat{j}+x(u,v)\hat{k}
+            \end{align*}
+        \indent Given $\vec{r}(u,v)$
+            \begin{align*}
+                \int\displaylimits_S f(x,y,z)dS = \iint_D f(\vec{r}(u,v)\left|\vec{r_v}\times\vec{r_u}\right|dA
+            \end{align*}
+        \indent \;If $\vec{r}(x,y) = x\hat{i}+y\hat{j}+g(x,y)\hat{k}$
+            \begin{align*}
+                \left|\vec{r_v}\times\vec{r_u}\right|
+                =\sqrt{\left(\frac{\sigma g}{\sigma x}\right)^2+\left(\frac{\sigma g}{\sigma y}\right)^2+1}
+            \end{align*}
+        \subsubsection{Surface Integral over Vector Field}
+            \begin{align*}
+                \iint_S\vec{F}\cdot d\vec{S} = \iint_S\vec{F}\cdot\vec{n}\;dS = \iint_S\vec{F}\cdot(\vec{r_v}\times\vec{r_u})\;dA
+            \end{align*}
+        \subsubsection{Stoke's theorem}
+            \begin{align*}
+                \int_C\vec{F}\cdot d\vec{r} = \iint_S(\nabla\times\vec{F})\cdot d\vec{S}
+            \end{align*}
+        \subsubsection{Divergence's theorem}
+            \begin{align*}
+                \int_S\vec{F}\cdot d\vec{S} = \iiint_E(\nabla\cdot\vec{F}) dV
+            \end{align*}
+            
+\cite{PaulsNotes}
+
+\bibliographystyle{plain}
+\bibliography{vec_calc_references}
+\end{document}

@@ -206,12 +206,12 @@
     \begin{align}
         x(t) &= \frac{A_0}{2} + \sum_{k=0}^{\infty}\left( A_k cos(2 \pi f_0 k t) + B_k sin(2 \pi f_0 k t)\right), \forall t\\
         A_0 &= \frac{2}{T_0} \int_{-0.5T_0}^{0.5T_0} x(t)dt\\
-        A_k &= \frac{2}{T_0} \int_{-0.5T_0}^{0.5T_0} x(t)cos(2\pi kt)dt\\
-        B_k &= \frac{2}{T_0} \int_{-0.5T_0}^{0.5T_0} x(t)sin(2\pi kt)dt\\
+        A_k &= \frac{2}{T_0} \int_{-0.5T_0}^{0.5T_0} x(t)cos(2\pi f_0 kt)dt\\
+        B_k &= \frac{2}{T_0} \int_{-0.5T_0}^{0.5T_0} x(t)sin(2\pi f_0 kt)dt\\
         &or \nonumber\\
         s(t) &= \frac{A_0}{2} \sum_{k=1}^{\infty} C_k cos(2 \pi f_0t + \phi_k)\\
         &where \nonumber\\
-        C_k &= \sqrt{A_k^2 + B_k^2} and \phi_k = tan^{-1}(\frac{B}{A})
+        C_k &= \sqrt{A_k^2 + B_k^2}\;and\;\phi_k = tan^{-1}(\frac{B}{A})
     \end{align}
     A spectrum of a periodic signal is the collection of amplitude, 
     frequency and phase information that allows us to represent the signal as a linear combination

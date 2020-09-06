@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Series Tests Formulae}
+\author{Leo Ngan}
+\date{August 2020}
+
+\usepackage[margin=1.25in]{geometry}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage{hyperref}
+
+\begin{document}
+
+\maketitle\pagebreak
+
+\tableofcontents\pagebreak
+
+\section{Formulae}
+    \subsection{List of Series Tests}
+    For the sum of two series:
+    \begin{align*}
+        &\sum^{\infty}_{n=1} a_n  &\&&  &\sum^{\infty}_{n=1} b_n
+    \end{align*}
+        \subsubsection{Divergence Tests}
+        If the limit of a[n] is not zero, or does not exist, then the sum diverges.
+            \begin{align*}
+                \lim_{n\rightarrow \infty} a_n \neq 0 \Rightarrow \sum^{\infty}_{n=1} a_n \text{ diverges}
+            \end{align*}
+            
+        \subsubsection{Integral Tests}
+        If you can define f so that it is a continuous, positive, decreasing function from 1 to infinity (including 1) such that a[n]=f(n), then the sum will converge if and only if the integral of f from 1 to infinity converges.
+            \begin{gather*}
+                f \text{ continuous, positive, decreasing on } [1,\infty)\\[6pt]
+                \text{such that } a_n = f(n)\\[6pt]
+                \sum^{\infty}_{n=1} a_n \text{ converges } \Longleftrightarrow \int^{\infty}_{1} f(x) dx \text{ converges}
+            \end{gather*}
+        Please note that this does not mean that the sum of the series is that same as the value of the integral. In most cases, the two will be quite different.
+        
+        \subsubsection{Comparison Tests}
+        Let b[n] be a second series. Require that all a[n] and b[n] are positive. If b[n] converges, and a[n]<=b[n] for all n, then a[n] also converges. If the sum of b[n] diverges, and a[n]>=b[n] for all n, then the sum of a[n] also diverges.
+            \begin{gather*}
+                a_n,\;b_n\;>\;0\text{ for all }n\\[6pt]
+                \sum^{\infty}_{n=1} b_n \text{ converges and } a_n \leq b_n \text{ then for all } n\Rightarrow\sum^{\infty}_{n=1} a_n\text{ converges}\\[6pt]
+                \sum^{\infty}_{n=1} b_n \;\text{ diverges and } a_n \geq b_n \text{ then for all } n\Rightarrow\sum^{\infty}_{n=1} a_n\text{ diverges}
+            \end{gather*}
+            
+        \subsubsection{Limit Comparison Tests}
+        Let b[n] be a second series. Require that all a[n] and b[n] are positive.
+        \begin{enumerate}
+            \item If the limit of a[n]/b[n] $>0$, the sum of a[n] converges if and only if the sum of b[n] converges.
+            \item If the limit of a[n]/b[n] = 0, and the sum of b[n] converges, then the sum of a[n] also converges.
+            \item If the limit of a[n]/b[n] = $\infty$, and the sum of b[n] diverges, then the sum of a[n] also diverges.
+        \end{enumerate}
+            \begin{align*}
+                a_n,\;b_n\;>\;0\text{ for all }n
+            \end{align*}
+            \begin{align*}
+                \lim_{n\rightarrow \infty}\frac{a_n}{b_n}> & \;0\Rightarrow\left(\sum^{\infty}_{n=1} a_n \text{ converges } \Longleftrightarrow \sum^{\infty}_{n=1} b_n \text{ converges }\right)\\[6pt]
+                \lim_{n\rightarrow \infty}\frac{a_n}{b_n}= & \;0\text{ and }\left(\sum^{\infty}_{n=1} b_n \text{ converges } \Rightarrow \sum^{\infty}_{n=1} a_n \text{ converges }\right)\\[6pt]
+                \lim_{n\rightarrow \infty}\frac{a_n}{b_n}= & \;\infty\text{ and }\left(\sum^{\infty}_{n=1} b_n \text{ diverges } \Rightarrow \sum^{\infty}_{n=1} a_n \text{ diverges }\right)
+            \end{align*}
+            
+        \subsubsection{Alternating Series Tests}
+        If $a[n]=(-1)^{(n+1)}b[n]$, where b[n] is positive, decreasing, and converging to zero, then the sum of a[n] converges.
+            \begin{gather*}
+                a_n=(-1)^{(n+1)} \cdot b_n,\;b_n>0\text{ for all }n,\; b_n \text{ decreasing}\\[6pt]
+                \lim_{n\rightarrow\infty} b_n = 0 \Rightarrow \sum^{\infty}_{n=1}a_n\text{ converges}
+            \end{gather*}
+            
+        \subsubsection{Absolute Convergence Tests}
+        If the sum of |a[n]| converges, then the sum of a[n] converges.
+            \begin{gather*}
+                \sum^{\infty}_{n=1}|a_n|\text{ converges} \Rightarrow \sum^{\infty}_{n=1}a_n\text{ converges}
+            \end{gather*}
+            
+        \subsubsection{Ratio Tests}
+        If the limit of |a[n+1]/a[n]| is less than 1, then the series (absolutely) converges. If the limit is larger than one, or infinite, then the series diverges.
+            \begin{gather*}
+                \lim_{n\rightarrow\infty} \frac{a_{n+1}}{a_{n}} < 1 \Rightarrow \sum^{\infty}_{n=1}a_n\text{ converges}\\[6pt]
+                \lim_{n\rightarrow\infty} \frac{a_{n+1}}{a_{n}} > 1 \Rightarrow \sum^{\infty}_{n=1}a_n\text{ diverges }
+            \end{gather*}
+            
+        \subsubsection{Root Tests}
+        If the limit of $(|a[n]|)^{(1/n)}$ is less than one, then the series (absolutely) converges. If the limit is larger than one, or infinite, then the series diverges.
+            \begin{gather*}
+                \lim_{n\rightarrow\infty} \sqrt[n]{|a_n|} < 1 \Rightarrow \sum^{\infty}_{n=1}a_n\text{ converges}\\[6pt]
+                \lim_{n\rightarrow\infty} \sqrt[n]{|a_n|} > 1 \Rightarrow \sum^{\infty}_{n=1}a_n\text{ diverges }
+            \end{gather*}
+            
+    \subsection{Expansion}
+        \subsubsection{Taylor Series}
+        power series representation for the function f(x) about x=a exists the Taylor Series for f(x) about x=a is,
+            \begin{align*}
+                f(x)   =&\sum^{\infty}_{n=0} \frac{f^{(n)}(a)} {n!}\times(x-a)^n\\[6pt]
+                        &f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \frac{f'''(a)}{3!}(x-a)^3 \cdots
+            \end{align*}
+            
+        \subsubsection{Taylor Series Approximation Error Bound}
+        When approximating using the nth degree Taylor Polynomial at a, the error is:
+            \begin{align*}
+                E =& f(x)-P_n(x)\\[6pt]
+                |R_n| =& \left|\frac{f^{(n+1)}(c)}{(n+1)!}(x-a)^n+1\right|
+            \end{align*}
+        \vspace*{\fill}
+        
+\cite{PaulsNotes}
+\cite{OregonState}
+
+\bibliographystyle{plain}
+\bibliography{series_references}
+\end{document}
