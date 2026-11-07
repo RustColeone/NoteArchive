@@ -4,75 +4,128 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Note Archive</title>
+<link rel="stylesheet" id="hl-light" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<link rel="stylesheet" id="hl-dark" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
 <style>
-:root{--bg:#fbfaf7;--panel:#f2f0ea;--ink:#1d1d1b;--quiet:#6a685f;--rule:#dcd9cf;--hover:#e7e4dc;--sel:#d9e5f4;--accent:#1f5fa8}
+:root{--bg:#fbfaf7;--panel:#f2f0ea;--ink:#1d1d1b;--quiet:#6a685f;--rule:#dcd9cf;--hover:#e7e4dc;--sel:#d9e5f4;--accent:#1f5fa8;--side:300px}
 @media (prefers-color-scheme:dark){:root{--bg:#17171a;--panel:#1e1e22;--ink:#e9e7e1;--quiet:#9d9a91;--rule:#313137;--hover:#2a2a30;--sel:#203a5c;--accent:#86b6ee}}
+@media (prefers-color-scheme:light){#hl-dark{display:none}}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;grid-template-rows:auto 1fr;grid-template-columns:300px 1fr;grid-template-areas:"top top" "side main"}
-header{grid-area:top;display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--rule);min-width:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;grid-template-rows:auto 1fr;grid-template-columns:var(--side) 1fr;grid-template-areas:"top top" "side main"}
+body.fold{grid-template-columns:0 1fr}
+body.fold aside{visibility:hidden}
+header{grid-area:top;display:flex;align-items:center;gap:10px;padding:8px 16px 8px 10px;border-bottom:1px solid var(--rule);min-width:0}
 header h1{font-size:15px;margin:0;white-space:nowrap}
 header h1 a{color:inherit;text-decoration:none}
-#toggle{display:none;background:none;border:1px solid var(--rule);color:var(--ink);border-radius:6px;padding:4px 9px;font-size:15px;cursor:pointer}
+.btn{text-decoration:none;background:none;border:1px solid var(--rule);color:var(--ink);border-radius:6px;padding:4px 9px;font:inherit;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--hover)}
+.btn[aria-pressed=true]{background:var(--sel);border-color:var(--accent)}
+#toggle{font-size:16px;line-height:1;padding:5px 9px}
 nav.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:2px;min-width:0;font-size:13px;color:var(--quiet)}
 nav.crumbs a{color:var(--accent);text-decoration:none;padding:2px 4px;border-radius:4px}
 nav.crumbs a:hover{background:var(--hover)}
-nav.crumbs span.sep{opacity:.6}
-nav.crumbs span.cur{color:var(--ink);padding:2px 4px;overflow-wrap:anywhere}
-#open{margin-left:auto;font-size:12px;color:var(--accent);white-space:nowrap;text-decoration:none}
-aside{grid-area:side;background:var(--panel);border-right:1px solid var(--rule);overflow:auto;padding:8px 0}
+nav.crumbs .sep{opacity:.6}
+nav.crumbs .cur{color:var(--ink);padding:2px 4px;overflow-wrap:anywhere}
+.right{margin-left:auto;display:flex;gap:10px;align-items:center}
+#open{font-size:12px;color:var(--accent);white-space:nowrap;text-decoration:none}
+aside{grid-area:side;background:var(--panel);border-right:1px solid var(--rule);overflow:auto;padding:8px 0;min-width:0}
 #filter{margin:0 10px 8px;width:calc(100% - 20px);padding:6px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
 ul.tree,ul.tree ul{list-style:none;margin:0;padding:0}
 ul.tree ul{padding-left:14px}
-.row{display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:4px;margin:0 4px;color:var(--ink);text-decoration:none}
+.row{display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;overflow:hidden;border-radius:4px;margin:0 4px;color:var(--ink);text-decoration:none}
 .row:hover{background:var(--hover)}
 .row.sel{background:var(--sel)}
 .caret{width:10px;flex:none;font-size:10px;color:var(--quiet);transition:transform .12s}
 li.open>.row .caret{transform:rotate(90deg)}
 li:not(.open)>ul{display:none}
-.ic{flex:none;width:30px;font:600 9px/1 ui-monospace,Menlo,Consolas,monospace;color:var(--quiet);text-align:center;border:1px solid var(--rule);border-radius:3px;padding:2px 0}
-.dir>.row .ic{border-style:dashed}
 .name{overflow:hidden;text-overflow:ellipsis}
+/* type icons: colour for speed, text label so they still read in grayscale */
+.ic{flex:none;width:32px;height:18px;display:inline-flex;align-items:center;justify-content:center;font:700 9px/1 ui-monospace,Menlo,Consolas,monospace;color:#fff;border-radius:3px;background:var(--c,#7a7870);letter-spacing:.02em}
+.ic.dir{background:none;width:32px}
+.ic.dir svg{width:20px;height:16px}
+.t-pdf{--c:#c4302b}.t-html{--c:#d9661f}.t-py{--c:#2f6ea8}.t-tex{--c:#2e7d4f}.t-md{--c:#555}.t-img{--c:#7b4fb0}
+.t-data{--c:#8a6d1c}.t-code{--c:#2a7f86}.t-doc{--c:#2b579a}.t-audio{--c:#b0377a}.t-other{--c:#7a7870}
 main{grid-area:main;min-width:0;min-height:0;display:flex;flex-direction:column}
 #view{flex:1;min-height:0;overflow:auto}
 iframe{border:0;width:100%;height:100%;display:block;background:#fff}
-.pad{padding:24px 16px;max-width:980px}
+.pad{padding:24px 16px;max-width:1100px}
 .pad img{max-width:100%;height:auto;background:#fff}
-pre{margin:0;padding:16px;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre;overflow:auto;min-height:100%}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:12px}
-.grid a{display:flex;gap:8px;align-items:center;padding:10px;border:1px solid var(--rule);border-radius:8px;color:var(--ink);text-decoration:none;overflow:hidden}
+pre{margin:0;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;min-height:100%}
+pre code.hljs{padding:16px;min-height:100%;display:block;overflow:auto;background:transparent}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin-top:12px}
+.grid a{display:flex;gap:8px;align-items:center;padding:9px 10px;border:1px solid var(--rule);border-radius:8px;color:var(--ink);text-decoration:none;overflow:hidden;min-width:0}
 .grid a:hover{background:var(--hover)}
+.grid a .sub{display:block;font-size:11px;color:var(--quiet);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.grid a .txt{min-width:0}
+.grid a .txt .name{display:block;white-space:nowrap}
 .muted{color:var(--quiet)}
 h2{margin:0 0 4px;font-size:20px}
+h3{margin:22px 0 0;font-size:15px;display:flex;align-items:center;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:999px;padding:3px 10px 3px 4px;background:none;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.chip[aria-pressed=false]{opacity:.45}
+.chip .ic{width:30px;height:16px;border-radius:999px}
 @media (max-width:760px){
-  body{grid-template-columns:1fr;grid-template-areas:"top" "main"}
-  #toggle{display:block}
+  body,body.fold{grid-template-columns:1fr;grid-template-areas:"top" "main"}
+  body.fold aside{visibility:visible}
   aside{position:fixed;top:0;left:0;bottom:0;width:min(86vw,320px);z-index:5;transform:translateX(-100%);transition:transform .18s}
   body.nav aside{transform:none;box-shadow:0 0 24px rgba(0,0,0,.25)}
-  #open{display:none}
+  #open,#typesBtn .lbl{display:none}
+  header{gap:8px}
 }
 </style>
 </head>
 <body>
 <header>
-  <button id="toggle" aria-label="Show folders">&#9776;</button>
+  <button id="toggle" class="btn" aria-label="Fold the folder panel" title="Fold the folder panel">&#9776;</button>
   <h1><a href="#/">Note Archive</a></h1>
   <nav class="crumbs" id="crumbs"></nav>
-  <a id="open" target="_blank" rel="noopener" hidden>Open in new tab</a>
+  <div class="right">
+    <a id="open" target="_blank" rel="noopener" hidden>Open in new tab</a>
+    <a id="typesBtn" class="btn" href="#types" title="All files by type">&#9638; <span class="lbl">By type</span></a>
+  </div>
 </header>
 <aside>
   <input id="filter" type="search" placeholder="Filter files" aria-label="Filter files">
   <ul class="tree" id="tree"><li class="muted" style="padding:6px 14px">Loading…</li></ul>
 </aside>
 <main><div id="view"></div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/latex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/matlab.min.js"></script>
 <script>
 const OWNER='RustColeone', REPO='NoteArchive', BRANCH='master';
 const HIDE=/^(index\.html|PythonRequirements\.txt)$|(^|\/)(\.|__pycache__\/?)/;   // site plumbing, not notes
-const TEXT=/\.(py|m|c|h|cpp|java|js|tex|bib|md|txt|csv|json|sp|scs|va|v|sv|inc|sh|log|yml|yaml)$/i;
+const TYPES=[ // [key, label, extensions, highlight.js language]
+  ['pdf','PDF',['pdf']],
+  ['html','HTML',['html','htm']],
+  ['py','Python',['py','ipynb'],'python'],
+  ['tex','LaTeX',['tex','bib','sty','cls'],'latex'],
+  ['md','Text',['md','txt'],'markdown'],
+  ['code','Code',['m','c','h','cpp','java','js','sh','v','sv','va','sp','scs','inc'],null],
+  ['data','Data',['csv','json','xlsx','xls','mat','yml','yaml'],null],
+  ['img','Image',['png','jpg','jpeg','gif','svg','webp']],
+  ['doc','Office',['doc','docx','ppt','pptx']],
+  ['audio','Audio',['mp3','wav','mid','midi','m4a']],
+];
+const BY_EXT={}; TYPES.forEach(t=>t[2].forEach(e=>BY_EXT[e]=t));
+const OTHER=['other','Other',[]];
+const extOf=n=>{const m=n.match(/\.([a-z0-9]+)$/i);return m?m[1].toLowerCase():'';};
+const typeOf=n=>BY_EXT[extOf(n)]||OTHER;
+const TEXT=/\.(py|m|c|h|cpp|java|js|tex|bib|sty|cls|md|txt|csv|json|sp|scs|va|v|sv|inc|sh|log|yml|yaml)$/i;
 const IMG=/\.(png|jpe?g|gif|svg|webp)$/i;
+const FOLDER='<svg viewBox="0 0 20 16" aria-hidden="true"><path d="M1 3a1.5 1.5 0 0 1 1.5-1.5h4.6l1.8 1.8h8.6A1.5 1.5 0 0 1 19 4.8V13a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 1 13z" fill="#e8b84a" stroke="#b8862a" stroke-width=".8"/><path d="M1 5.6h18" stroke="#c9972f" stroke-width=".8"/></svg>';
 const enc=p=>p.split('/').map(encodeURIComponent).join('/');
 const $=s=>document.querySelector(s);
-let root={name:'',path:'',dirs:{},files:[]}, nodes={};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let root={name:'',path:'',dirs:{},files:[]}, nodes={}, allFiles=[];
+function icon(name,isDir){
+  if(isDir) return `<span class="ic dir">${FOLDER}</span>`;
+  const t=typeOf(name), e=extOf(name)||'file';
+  return `<span class="ic t-${t[0]}" title="${t[1]}">${esc(e.slice(0,4).toUpperCase())}</span>`;
+}
+const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 
 async function loadTree(){
   const key='tree-'+BRANCH;
@@ -90,57 +143,82 @@ function build(list){
     for(const seg of parts){cur=cur.dirs[seg]; if(!cur) break;}
     if(!cur) continue;
     if(type==='tree'){const n={name,path:p,dirs:{},files:[]}; cur.dirs[name]=n; nodes[p]=n;}
-    else cur.files.push({name,path:p});
+    else {const f={name,path:p}; cur.files.push(f); allFiles.push(f);}
   }
 }
-const sortDirs=n=>Object.values(n.dirs).sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
-const sortFiles=n=>n.files.slice().sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
-const ext=n=>{const m=n.match(/\.([a-z0-9]+)$/i);return m?m[1].slice(0,4).toUpperCase():'FILE';};
+const cmp=(a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true});
+const sortDirs=n=>Object.values(n.dirs).sort(cmp);
+const sortFiles=n=>n.files.slice().sort(cmp);
 
 function renderTree(n,ul){
   for(const d of sortDirs(n)){
     const li=document.createElement('li'); li.className='dir'; li.dataset.path=d.path;
-    li.innerHTML=`<a class="row" href="#/${enc(d.path)}"><span class="caret">&#9654;</span><span class="ic">DIR</span><span class="name"></span></a><ul></ul>`;
-    li.querySelector('.name').textContent=d.name;
+    li.innerHTML=`<a class="row" href="#/${enc(d.path)}"><span class="caret">&#9654;</span>${icon(d.name,true)}<span class="name">${esc(d.name)}</span></a><ul></ul>`;
     li.querySelector('.caret').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();li.classList.toggle('open');});
     ul.appendChild(li); renderTree(d,li.querySelector('ul'));
   }
   for(const f of sortFiles(n)){
     const li=document.createElement('li'); li.className='file'; li.dataset.path=f.path;
-    li.innerHTML=`<a class="row" href="#/${enc(f.path)}"><span class="caret"></span><span class="ic">${ext(f.name)}</span><span class="name"></span></a>`;
-    li.querySelector('.name').textContent=f.name; li.querySelector('.row').title=f.path;
+    li.innerHTML=`<a class="row" href="#/${enc(f.path)}" title="${esc(f.path)}"><span class="caret"></span>${icon(f.name)}<span class="name">${esc(f.name)}</span></a>`;
     ul.appendChild(li);
   }
 }
-function crumbs(path){
+function crumbs(parts,last){
   const c=$('#crumbs'); c.innerHTML='';
   const add=(label,href,cur)=>{
     if(c.childNodes.length){const s=document.createElement('span');s.className='sep';s.textContent='/';c.appendChild(s);}
     const el=document.createElement(cur?'span':'a'); el.textContent=label; if(cur) el.className='cur'; else el.href=href; c.appendChild(el);
   };
-  add('Home','#/',!path);
-  const parts=path?path.split('/'):[];
-  parts.forEach((p,i)=>add(p,'#/'+enc(parts.slice(0,i+1).join('/')),i===parts.length-1));
+  add('Home','#/',!parts.length&&!last);
+  parts.forEach((p,i)=>add(p,'#/'+enc(parts.slice(0,i+1).join('/')),!last&&i===parts.length-1));
+  if(last) add(last,'',true);
 }
 function select(path){
   document.querySelectorAll('.row.sel').forEach(r=>r.classList.remove('sel'));
+  if(path==null) return;
   const li=document.querySelector(`li[data-path="${CSS.escape(path)}"]`); if(!li) return;
   li.querySelector('.row').classList.add('sel');
   for(let p=li.parentElement.closest('li');p;p=p.parentElement.closest('li')) p.classList.add('open');
   if(li.classList.contains('dir')) li.classList.add('open');
   li.querySelector('.row').scrollIntoView({block:'nearest'});
 }
+function card(x,showPath){
+  const a=document.createElement('a'); a.href='#/'+enc(x.path); a.title=x.path;
+  const dir=x.path.split('/').slice(0,-1).join(' / ');
+  a.innerHTML=`${icon(x.name,!!x.dirs)}<span class="txt"><span class="name">${esc(x.name)}</span>${showPath&&dir?`<span class="sub">${esc(dir)}</span>`:''}</span>`;
+  return a;
+}
 function folderView(n){
   const v=$('#view'); v.innerHTML=`<div class="pad"><h2></h2><div class="muted"></div><div class="grid"></div></div>`;
   v.querySelector('h2').textContent=n.path?n.name:'Note Archive';
   const ds=sortDirs(n), fs=sortFiles(n);
   v.querySelector('.muted').textContent=`${ds.length} folder${ds.length==1?'':'s'}, ${fs.length} file${fs.length==1?'':'s'}`;
-  const g=v.querySelector('.grid');
-  for(const x of [...ds,...fs]){
-    const a=document.createElement('a'); a.href='#/'+enc(x.path);
-    a.innerHTML=`<span class="ic">${x.dirs?'DIR':ext(x.name)}</span><span class="name"></span>`;
-    a.querySelector('.name').textContent=x.name; g.appendChild(a);
+  const g=v.querySelector('.grid'); for(const x of [...ds,...fs]) g.appendChild(card(x));
+}
+function typesView(){
+  const groups={}; for(const f of allFiles){const t=typeOf(f.name); (groups[t[0]]=groups[t[0]]||{t,files:[]}).files.push(f);}
+  const order=[...TYPES,OTHER].map(t=>t[0]).filter(k=>groups[k]);
+  let off=new Set(JSON.parse(store.get('types-off')||'[]'));
+  const v=$('#view'); v.innerHTML=`<div class="pad"><h2>All files by type</h2><div class="muted">${allFiles.length} files. Click a type to hide or show it.</div><div class="chips"></div><div class="body"></div></div>`;
+  const chips=v.querySelector('.chips'), body=v.querySelector('.body');
+  const draw=()=>{
+    body.innerHTML='';
+    for(const k of order){
+      if(off.has(k)) continue;
+      const {t,files}=groups[k];
+      const h=document.createElement('h3'); h.innerHTML=`<span class="ic t-${k}">${esc(t[1].slice(0,4).toUpperCase())}</span>${esc(t[1])} <span class="muted">${files.length}</span>`;
+      const g=document.createElement('div'); g.className='grid';
+      files.slice().sort((a,b)=>a.path.localeCompare(b.path,undefined,{numeric:true})).forEach(f=>g.appendChild(card(f,true)));
+      body.append(h,g);
+    }
+  };
+  for(const k of order){
+    const t=groups[k].t, b=document.createElement('button'); b.className='chip'; b.setAttribute('aria-pressed',!off.has(k));
+    b.innerHTML=`<span class="ic t-${k}">${groups[k].files.length}</span>${esc(t[1])}`;
+    b.onclick=()=>{off.has(k)?off.delete(k):off.add(k); b.setAttribute('aria-pressed',!off.has(k)); store.set('types-off',JSON.stringify([...off])); draw();};
+    chips.appendChild(b);
   }
+  draw();
 }
 async function fileView(path){
   const v=$('#view'), url=enc(path), o=$('#open');
@@ -148,9 +226,17 @@ async function fileView(path){
   if(/\.(html?|pdf)$/i.test(path)){ v.innerHTML=''; const f=document.createElement('iframe'); f.src=url; f.title=path; v.appendChild(f); return; }
   if(IMG.test(path)){ v.innerHTML=`<div class="pad"><img alt=""></div>`; v.querySelector('img').src=url; return; }
   if(TEXT.test(path)){
-    v.innerHTML='<pre class="muted">Loading…</pre>';
-    try{const r=await fetch(url); const t=await r.text(); const pre=document.createElement('pre'); pre.textContent=t; v.innerHTML=''; v.appendChild(pre);}
-    catch(e){v.innerHTML='<div class="pad">Could not load this file.</div>';}
+    v.innerHTML='<div class="pad muted">Loading…</div>';
+    try{
+      const r=await fetch(url); if(!r.ok) throw 0; const txt=await r.text();
+      const pre=document.createElement('pre'), code=document.createElement('code'); code.textContent=txt; pre.appendChild(code);
+      v.innerHTML=''; v.appendChild(pre);
+      const lang=typeOf(path)[3];
+      if(window.hljs && txt.length<400000){
+        if(lang && hljs.getLanguage(lang)) code.innerHTML=hljs.highlight(txt,{language:lang}).value; else code.innerHTML=hljs.highlightAuto(txt).value;
+      }
+      code.classList.add('hljs');
+    }catch(e){v.innerHTML='<div class="pad">Could not load this file.</div>';}
     return;
   }
   v.innerHTML=`<div class="pad"><p>No preview for this file type.</p><p><a download>Download</a></p></div>`;
@@ -158,13 +244,24 @@ async function fileView(path){
 }
 function route(){
   document.body.classList.remove('nav');
+  $('#open').hidden=true;
+  const isTypes=location.hash==='#types';
+  $('#typesBtn').setAttribute('aria-pressed',isTypes);
+  if(isTypes){crumbs([], 'All files by type'); select(null); typesView(); document.title='By type · Note Archive'; return;}
   const path=decodeURIComponent(location.hash.replace(/^#\/?/,'')).replace(/\/$/,'');
-  $('#open').hidden=true; crumbs(path); select(path);
+  const parts=path?path.split('/'):[];
+  crumbs(parts); select(path);
   const n=nodes[path];
   if(n) folderView(n); else fileView(path);
-  document.title=path?path.split('/').pop()+' · Note Archive':'Note Archive';
+  document.title=path?parts[parts.length-1]+' · Note Archive':'Note Archive';
 }
-$('#toggle').onclick=()=>document.body.classList.toggle('nav');
+// fold: desktop collapses the column (remembered), phone slides it over
+if(store.get('fold')==='1') document.body.classList.add('fold');
+$('#toggle').onclick=()=>{
+  if(matchMedia('(max-width:760px)').matches) document.body.classList.toggle('nav');
+  else store.set('fold',document.body.classList.toggle('fold')?'1':'0');
+};
+document.addEventListener('click',e=>{ if(document.body.classList.contains('nav')&&!e.target.closest('aside,#toggle')) document.body.classList.remove('nav'); });
 $('#filter').addEventListener('input',e=>{
   const q=e.target.value.trim().toLowerCase();
   document.querySelectorAll('#tree li').forEach(li=>{li.style.display='';});
@@ -176,7 +273,7 @@ $('#filter').addEventListener('input',e=>{
   });
 });
 loadTree().then(list=>{build(list); const ul=$('#tree'); ul.innerHTML=''; renderTree(root,ul); window.addEventListener('hashchange',route); route();})
-.catch(err=>{$('#tree').innerHTML=`<li class="muted" style="padding:6px 14px">Couldn't load the file list (${err.message}). GitHub allows 60 listings an hour per visitor, so try again shortly.</li>`;});
+.catch(err=>{$('#tree').innerHTML=`<li class="muted" style="padding:6px 14px">Couldn't load the file list (${esc(err.message)}). GitHub allows 60 listings an hour per visitor, so try again shortly.</li>`;});
 </script>
 </body>
 </html>
